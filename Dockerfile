@@ -5,7 +5,6 @@ RUN mkdir -p /sand_carving_mobile \
 WORKDIR /sand_carving_mobile
 COPY . /sand_carving_mobile
 RUN npm install
-EXPOSE 8080
-# 该容器不需要持续运行,build完对应资源挂载卷即可
+# EXPOSE 8080
 ENTRYPOINT ["npm", "run"]
-CMD ["start"]
+CMD ["build:h5"]
