@@ -1,4 +1,4 @@
-FROM ubuntu:19.10
+FROM node:10.13.0
 MAINTAINER AgilityJin agility_jin@outlook.com
 RUN mkdir -p /sand_carving_mobile \
     && npm config set registry http://r.cnpmjs.org/
