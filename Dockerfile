@@ -4,7 +4,8 @@ RUN mkdir -p /sand_carving_mobile \
     && npm config set registry http://r.cnpmjs.org/
 WORKDIR /sand_carving_mobile
 COPY . /sand_carving_mobile
-RUN npm install
+RUN npm install \
+    && npm update
 # EXPOSE 8080
 ENTRYPOINT ["npm", "run"]
 CMD ["build:h5"]
