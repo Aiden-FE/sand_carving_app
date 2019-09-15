@@ -1,16 +1,71 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "sand_carving_mobile"
-			}
-		}
-	],
+        {
+            "path" : "pages/login/login",
+            "style" : {
+              "navigationBarTitleText": "沙雕登录"
+            }
+        },
+        {
+            "path" : "pages/demo/demo",
+            "style" : {
+              "navigationBarTitleText": "日程"
+            }
+        },
+        {
+            "path" : "pages/home/home",
+            "style" : {
+              "navigationBarTitleText": "首页"
+            }
+        }
+        ,{
+            "path" : "pages/todo/todo",
+            "style" : {
+              "navigationBarTitleText": "待办"
+            }
+        }
+        ,{
+            "path" : "pages/user/user",
+            "style" : {
+              "navigationBarTitleText": "我的"
+            }
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "sand_carving_mobile",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	}
+		"navigationBarTitleText": "沙雕",
+		"navigationBarBackgroundColor": "#ffffff",
+		"backgroundColor": "#ffffff"
+	},
+  "tabBar": {
+    "color": "#adadad",
+    "selectedColor": "#f4ea2a",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/demo/demo",
+        "text": "demo",
+        "iconPath": "static/images/home.png",
+        "selectedIconPath": "static/images/home-active.png"
+      },
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "static/images/home.png",
+        "selectedIconPath": "static/images/home-active.png"
+      },
+      {
+        "pagePath": "pages/todo/todo",
+        "text": "事务",
+        "iconPath": "static/images/todo.png",
+        "selectedIconPath": "static/images/todo-active.png"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我的",
+        "iconPath": "static/images/user.png",
+        "selectedIconPath": "static/images/user-active.png"
+      }
+    ]
+  }
 }

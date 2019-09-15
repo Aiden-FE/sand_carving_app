@@ -1,0 +1,43 @@
+.sc-form {
+  padding: 32rpx;
+  &-tips {
+    text-align: center;
+    font-size: 24rpx;
+    margin-top: 60rpx;
+    color: @tipsColor;
+  }
+  &-buttons {
+    margin-top: 68rpx;
+  }
+  &-item {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 110rpx;
+    &-label {
+      width: 186rpx;
+      vertical-align: middle;
+      font-size: 32rpx;
+      color: @labelColor;
+    }
+    &-input {
+      flex: 1;
+      font-size: 32rpx;
+      color: @textColor;
+    }
+  }
+  &-item::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    content: '';
+    height: 1px;
+    background-color: #D8D8D8;
+  }
+}
+
+.container {
+  font-size: 28rpx;
+}
