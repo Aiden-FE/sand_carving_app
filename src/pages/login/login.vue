@@ -54,7 +54,7 @@ export default {
 	async onLoad() {
     if (uni.getStorageSync(USER_INFO_KEY)) {
       uni.switchTab({
-        url: '../home/home'
+        url: '../user/user'
       })
     } else {
       this.getCaptchaImg();
@@ -94,7 +94,7 @@ export default {
         // 执行数据存储
         uni.setStorageSync(USER_INFO_KEY, res.data);
         setTimeout(uni.switchTab({
-          url: '../demo/demo'
+          url: '../user/user'
         }), 1600)
       } else {
         console.log('Error: ', res)

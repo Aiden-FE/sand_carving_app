@@ -1,6 +1,6 @@
 <script>
 	import { PLATFORM, ENV } from '@/config'
-	import { APP_ID } from '@/config/constants'
+	import { APP_ID, APP_INFO_KEY } from '@/config/constants'
 	import { downloadApp } from '@/utils'
 	export default {
 		methods: {
@@ -8,6 +8,7 @@
 			checkUpdate() {
 				const _self = this;
 				plus.runtime.getProperty(plus.runtime.appid, async function(appInfo) {
+          uni.setStorageSync(APP_INFO_KEY, appInfo); // 每次进入app存储应用信息
 					const res = await _self.$api.version({
 						appId: ENV.isDev ? APP_ID : appInfo.appid, // 因为在dev环境这个值是Hbuild
 						version: appInfo.version
@@ -20,8 +21,10 @@
 						title: '发布新版本啦',
 						content: res.data.descriptions,
 						showCancel: !res.data.isForce,
-						success: (result) => {
-							downloadApp(res.data.url, res.data.updateType);
+						success: ({confirm}) => {
+              if (confirm) {
+                downloadApp(res.data.url, res.data.updateType);
+              }
 						}
 					})
 				})

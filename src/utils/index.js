@@ -43,8 +43,10 @@ export const hotUpdateApp = url => {
             title: '发布新版本啦',
             content: '更新完成,请确认重新启动应用',
             showCancel: false,
-            success: res => {
-              plus.runtime.restart();
+            success: ({confirm}) => {
+              if (confirm) {
+                plus.runtime.restart();
+              }
             }
           })
         }, e => {
