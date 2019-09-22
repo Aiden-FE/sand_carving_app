@@ -12,7 +12,7 @@ class CommonService {
   }
   success(msg = '') {
     // #ifdef APP-PLUS
-    uplus.nativeUI.toast(msg, {
+    plus.nativeUI.toast(msg, {
       align: 'center',
       duration: 1500,
       // icon: '',iconWidth,iconHeight
@@ -21,7 +21,7 @@ class CommonService {
   }
   warning(msg = '') {
     // #ifdef APP-PLUS
-    uplus.nativeUI.toast(msg, {
+    plus.nativeUI.toast(msg, {
       align: 'center',
       duration: 2500,
       // icon: '',iconWidth,iconHeight
@@ -30,7 +30,7 @@ class CommonService {
   }
   error(msg = '') {
     // #ifdef APP-PLUS
-    uplus.nativeUI.toast(msg, {
+    plus.nativeUI.toast(msg, {
       align: 'center',
       duration: 3000,
       // icon: '',iconWidth,iconHeight
