@@ -1,6 +1,14 @@
 import $common from '@/plugins'
 import MD5 from 'md5'
 import { KEY } from '@/config'
+import { USER_INFO_KEY } from '@/config/constants'
+
+export const logout = pageUrl => {
+  uni.removeStorageSync(USER_INFO_KEY)
+  uni.reLaunch({
+    url: pageUrl
+  })
+}
 
 export const encodeFunc = (contents, key = KEY) => {
   return MD5(MD5(contents)+key);

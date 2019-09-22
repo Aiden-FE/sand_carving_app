@@ -25,7 +25,9 @@
           <view class="signIcon uni-icon uni-icon-pengyouquan"></view>
         </view>
         <view class="sc-form-buttons">
-          <button class="submitBtn" :loading="submitStatus" form-type="submit" type="primary">登 录</button>
+          <button :style="{
+            opacity: submitStatus ? .7 : 1
+          }" class="submitBtn" :loading="submitStatus" form-type="submit">登 录</button>
         </view>
       </form>
     </view>
@@ -50,7 +52,13 @@ export default {
 		}
 	},
 	async onLoad() {
-    this.getCaptchaImg()
+    if (uni.getStorageSync(USER_INFO_KEY)) {
+      uni.switchTab({
+        url: '../home/home'
+      })
+    } else {
+      this.getCaptchaImg();
+    }
 	},
 	methods: {
     // 切换登录方式
@@ -98,19 +106,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.submitBtn[loading=true] {
-  background: #00B9B2;
-  opacity: .7;
-}
-</style>
-
-<style lang="less" scoped>
 .captcha-box {
   width: 220rpx;
   height: 40px;
 }
 
 .submitBtn {
+  color: #fff;
   background: @bgColor;
 }
 

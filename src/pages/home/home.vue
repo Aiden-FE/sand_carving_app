@@ -10,6 +10,8 @@
 			return {
 				
 			};
+		},
+		created() {
 		}
 	}
 </script>
