@@ -13,7 +13,7 @@ export default class HttpBasic {
 
   get token() {
     const userInfo = uni.getStorageSync(USER_INFO_KEY) || {}
-    return userInfo.token || 'not found token'
+    return userInfo.token || ''
   }
 
   messageError(msg = "") {
@@ -25,7 +25,6 @@ export default class HttpBasic {
   }
   async handleResponse(promise) {
     return promise.then(res => {
-      console.log(JSON.stringify(res))
       if (res[0]) {
         this.handleError(res[0])
         return res[0]

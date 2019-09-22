@@ -9,3 +9,9 @@ export const sign = {
   url: '/user/sign',
   method: 'post'
 }
+
+// 检查更新接口
+export const version = {
+  url: '/app/versions',
+  method: 'get'
+}

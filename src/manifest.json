@@ -2,13 +2,13 @@
     "name" : "沙雕",
     "appid" : "__UNI__6675368",
     "description" : "连接你我",
-    "versionName" : "1.0.0",
+    "versionName" : "1.0.1",
     "versionCode" : "100",
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
-        "compatible": {
-          "ignoreVersion": true
+        "compatible" : {
+            "ignoreVersion" : true
         },
         "usingComponents" : true,
         "splashscreen" : {

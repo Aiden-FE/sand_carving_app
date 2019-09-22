@@ -17,27 +17,19 @@ module.exports = {
       addSassResource(config.module.rule("less").oneOf(type))
     );
   },
-  devServer: {
-    port: 3000,
-    proxy: {
-      // '/api': {
-      //   target: `https://www.agilityjin.top`,
-      //   secure: false,
-      //   ws: true,
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     // '^/rest/blog': '/' // 需要rewrite的, 路径重写
-      //   }
-      // },
-      '/api': {
-        target: `http://127.0.0.1:7001`,
-        secure: false,
-        ws: true,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': '/' // 需要rewrite的, 路径重写
-        }
-      },
-    }
-  },
+  // devServer: {
+  //   port: 3000,
+  //   proxy: {
+  //     '/api': {
+  //       target: `http://127.0.0.1:7001`,
+  //       // target: `https://www.agilityjin.top`,
+  //       secure: false,
+  //       ws: true,
+  //       changeOrigin: true,
+  //       pathRewrite: {
+  //         '^/api': '/' // 需要rewrite的, 路径重写
+  //       }
+  //     },
+  //   }
+  // },
 }

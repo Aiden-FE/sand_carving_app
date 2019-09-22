@@ -41,8 +41,8 @@ export default {
 	data() {
 		return {
       form: {
-        account: 'jinxiaomin',
-        password: 'ps123456',
+        account: '',
+        password: '',
         captcha: ''
       },
       submitStatus: false,

@@ -3,12 +3,16 @@ export const KEY = "Agility";
 // 运行时环境
 export const PLATFORM = uni.getSystemInfoSync().platform
 
-const devEnv = {}
-const prodEnv = {}
+const devEnv = {
+  isDev: true
+}
+const prodEnv = {
+  isDev: false
+}
 
 // #ifdef APP-PLUS
-devEnv.BASE_URL = 'http://127.0.0.1:7001';
-prodEnv.BASE_URL = 'https://www.agilityjin.top:7001/api';
+devEnv.BASE_URL = 'http://192.168.1.2:7001'; // app开发时此地址必须为手机端或者模拟器能够访问到的ip地址
+prodEnv.BASE_URL = 'https://www.agilityjin.top/api';
 // #endif
 
 // #ifdef H5
