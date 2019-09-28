@@ -6,7 +6,6 @@ class CommonService {
     plus.nativeUI.toast(msg, {
       align: 'center',
       duration: 2000,
-      // icon: '',iconWidth,iconHeight
     });
     // #endif
   }
@@ -15,7 +14,6 @@ class CommonService {
     plus.nativeUI.toast(msg, {
       align: 'center',
       duration: 1500,
-      // icon: '',iconWidth,iconHeight
     });
     // #endif
   }
@@ -24,7 +22,6 @@ class CommonService {
     plus.nativeUI.toast(msg, {
       align: 'center',
       duration: 2500,
-      // icon: '',iconWidth,iconHeight
     });
     // #endif
   }
@@ -33,7 +30,6 @@ class CommonService {
     plus.nativeUI.toast(msg, {
       align: 'center',
       duration: 3000,
-      // icon: '',iconWidth,iconHeight
     });
     // #endif
   }

@@ -1,64 +1,39 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-        {
-            "path" : "pages/login/login",
-            "style" : {
-              "navigationBarTitleText": "沙雕登录"
-            }
-        },
-        {
-            "path" : "pages/demo/demo",
-            "style" : {
-              "navigationBarTitleText": "日程"
-            }
-        },
-        {
-            "path" : "pages/home/home",
-            "style" : {
-              "navigationBarTitleText": "首页"
-            }
-        }
-        ,{
-            "path" : "pages/todo/todo",
-            "style" : {
-              "navigationBarTitleText": "待办"
-            }
-        }
-        ,{
-            "path" : "pages/user/user",
-            "style" : {
-              "navigationBarTitleText": "我的"
-            }
-        }
-    ],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "沙雕",
-		"navigationBarBackgroundColor": "#ffffff",
-		"backgroundColor": "#ffffff"
-	},
+  "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "登录"
+      }
+    },
+    {
+      "path": "pages/albums/albums",
+      "style": {
+        "navigationBarTitleText": "云相册"
+      }
+    },
+    {
+      "path": "pages/user/user",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "沙雕",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#ffffff"
+  },
   "tabBar": {
     "color": "#adadad",
-    "selectedColor": "#f4ea2a",
+    "selectedColor": "#00B9B2",
     "backgroundColor": "#fff",
-    "list": [
-      {
-        "pagePath": "pages/demo/demo",
-        "text": "demo",
-        "iconPath": "static/images/home.png",
-        "selectedIconPath": "static/images/home-active.png"
-      },
-      {
-        "pagePath": "pages/home/home",
-        "text": "首页",
-        "iconPath": "static/images/home.png",
-        "selectedIconPath": "static/images/home-active.png"
-      },
-      {
-        "pagePath": "pages/todo/todo",
-        "text": "事务",
-        "iconPath": "static/images/todo.png",
-        "selectedIconPath": "static/images/todo-active.png"
+    "list": [{
+        "pagePath": "pages/albums/albums",
+        "text": "云相册",
+        "iconPath": "static/images/albums.png",
+        "selectedIconPath": "static/images/albums-active.png"
       },
       {
         "pagePath": "pages/user/user",
