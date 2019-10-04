@@ -1,5 +1,7 @@
 export const KEY = "Agility";
 
+export const ALBUMS_DEFAULT_IMG = "http://pybmabghq.bkt.clouddn.com/images/empty.jpg";
+
 // 运行时环境
 export const PLATFORM = uni.getSystemInfoSync().platform
 

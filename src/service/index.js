@@ -15,3 +15,21 @@ export const version = {
   url: '/open/versions',
   method: 'get'
 }
+
+// 得到当前用户下所有相册列表
+export const getAllalbums = {
+  url: '/app/albums',
+  method: 'get',
+}
+
+// 新增相册
+export const createAlbum = {
+  url: '/app/albums',
+  method: 'post',
+}
+
+// 删除相册
+export const deleteAlbum = {
+  url: '/app/albums',
+  method: 'delete',
+}

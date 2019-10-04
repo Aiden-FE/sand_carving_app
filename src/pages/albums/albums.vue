@@ -1,55 +1,109 @@
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view>
-      <uni-grid :column="3">
-          <uni-grid-item>
-              <text class="text">文本</text>
-          </uni-grid-item>
-          <uni-grid-item>
-              <text class="text">文本</text>
-          </uni-grid-item>
-          <uni-grid-item>
-              <text class="text">文本</text>
-          </uni-grid-item>
+  <view class="albums">
+    <view>
+      <uni-grid :show-border="false" :column="3">
+        <uni-grid-item v-for="item in albumsList" :key="item.id">
+          <image @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG" mode="aspectFit"></image>
+          <text class="text">{{ item.name }}</text>
+          <icon v-if="isShowDelete" @click="deleteAlbum(item)" class="album-delete-button" type="cancel" size="20" />
+        </uni-grid-item>
       </uni-grid>
-			<text class="title">{{title}}</text>
-		</view>
-	</view>
+    </view>
+    <uniFab ref="uniFab" direction="vertical" horizontal="right" @trigger="trigger" :content="content" :pattern="pattern"></uniFab>
+  </view>
 </template>
 
 <script>
-  import {uniGrid,uniGridItem} from '@dcloudio/uni-ui'
-	export default {
-    components:{uniGrid,uniGridItem},
-		data() {
-			return {
-				title: 'Hello'
-			}
-		},
-		onLoad() {
-
-		},
-		methods: {
-
-		}
-	}
+import { uniGrid, uniGridItem, uniFab } from '@dcloudio/uni-ui';
+import { ALBUMS_DEFAULT_IMG } from '@/config';
+export default {
+  components: { uniGrid, uniGridItem, uniFab },
+  data() {
+    return {
+      isShowDelete: false,
+      pattern: {
+        color: '#333',
+        backgroundColor: '#fff',
+        buttonColor: '#00B9B2'
+      },
+      content: [
+        {
+          iconPath: '../../static/images/albums.png',
+          text: '新建相册',
+          active: false,
+          value: 'create'
+        },
+        {
+          iconPath: '../../static/images/albums.png',
+          text: '上传图片',
+          active: false
+        }
+      ],
+      albumsList: [],
+      ALBUMS_DEFAULT_IMG
+    };
+  },
+  onLoad() {
+    this.getUserAlbumsList();
+  },
+  async onPullDownRefresh() {
+    await this.getUserAlbumsList();
+    uni.stopPullDownRefresh();
+  },
+  async onBackPress(options) {
+    await this.getUserAlbumsList();
+  },
+  methods: {
+    deleteAlbum(item) {
+      uni.showModal({
+        title: '提示',
+        content: `您确定要删除相册 ${item.name} 及该相册内所有图片吗?`,
+        success: async (opts) => {
+          if (opts.confirm) {
+            // 执行删除
+            const res = await this.$api.deleteAlbum(undefined, null, { payload: '/' + item.id });
+            if (res.status === 200) {
+              this.$common.success('删除相册成功');
+              this.isShowDelete = false;
+              this.getUserAlbumsList();
+            } else this.$common.warning(res.message || '删除相册失败');
+          }
+        }
+      })
+    },
+    trigger(e) {
+      this.$refs.uniFab.close(); // 收起按钮组
+      if (!e && !e.item) return;
+      switch (e.item.value){
+        // 新建相冊
+        case 'create':
+          uni.navigateTo({
+            url: './create/create'
+          });
+          break;
+        default:
+          break;
+      }
+    },
+    async getUserAlbumsList() {
+      const res = await this.$api.getAllalbums();
+      if (res.status !== 200) return this.$common.error(res.message || '获取用户相册列表失败');
+      this.albumsList = res.data;
+    }
+  }
+};
 </script>
 
-<style>
-	.content {
-		text-align: center;
-		height: 400upx;
-	}
-
-	.logo {
-		height: 200upx;
-		width: 200upx;
-		margin-top: 200upx;
-	}
-
-	.title {
-		font-size: 36upx;
-		color: #8f8f94;
-	}
+<style lang="less" scoped>
+.album-delete-button {
+  position: absolute;
+  right: -10rpx;
+  top: 0;
+}
+.albums {
+  padding-top: var(--status-bar-height);
+  &-img {
+    width: 100%;
+  }
+}
 </style>

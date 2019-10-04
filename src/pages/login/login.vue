@@ -1,10 +1,5 @@
 <template>
 	<view class="container">
-    <!-- <navigator open-type="switchTab" url="../demo/demo">
-      <view>
-        跳转路由
-      </view>
-    </navigator> -->
     <view class="sc-form">
       <form @submit="formSubmit">
         <view class="sc-form-item">
