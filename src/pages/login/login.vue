@@ -51,9 +51,7 @@ export default {
       uni.switchTab({
         url: '../albums/albums'
       })
-    } else {
-      this.getCaptchaImg();
-    }
+    } else this.getCaptchaImg();
 	},
 	methods: {
     // 切换登录方式

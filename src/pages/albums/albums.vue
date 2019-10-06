@@ -1,14 +1,16 @@
 <template>
   <view class="albums">
-    <view>
-      <uni-grid :show-border="false" :column="3">
-        <uni-grid-item v-for="item in albumsList" :key="item.id">
-          <image @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG" mode="aspectFit"></image>
-          <text class="text">{{ item.name }}</text>
-          <icon v-if="isShowDelete" @click="deleteAlbum(item)" class="album-delete-button" type="cancel" size="20" />
-        </uni-grid-item>
-      </uni-grid>
-    </view>
+    <uni-grid :show-border="false" :column="3">
+      <uni-grid-item>
+        <image @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="ALBUMS_DEFAULT_IMG" mode="aspectFit"></image>
+        <text class="text">全部</text>
+      </uni-grid-item>
+      <uni-grid-item v-for="item in albumsList" :key="item.id">
+        <image @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG" mode="aspectFit"></image>
+        <text class="text">{{ item.name }}</text>
+        <icon v-if="isShowDelete" @click="deleteAlbum(item)" class="album-delete-button" type="cancel" size="20" />
+      </uni-grid-item>
+    </uni-grid>
     <uniFab ref="uniFab" direction="vertical" horizontal="right" @trigger="trigger" :content="content" :pattern="pattern"></uniFab>
   </view>
 </template>
@@ -36,7 +38,8 @@ export default {
         {
           iconPath: '../../static/images/albums.png',
           text: '上传图片',
-          active: false
+          active: false,
+          value: 'upload'
         }
       ],
       albumsList: [],
@@ -50,15 +53,16 @@ export default {
     await this.getUserAlbumsList();
     uni.stopPullDownRefresh();
   },
-  async onBackPress(options) {
-    await this.getUserAlbumsList();
+  onBackPress(options) {
+    console.log('触发后退生命周期', options);
+    this.getUserAlbumsList();
   },
   methods: {
     deleteAlbum(item) {
       uni.showModal({
         title: '提示',
         content: `您确定要删除相册 ${item.name} 及该相册内所有图片吗?`,
-        success: async (opts) => {
+        success: async opts => {
           if (opts.confirm) {
             // 执行删除
             const res = await this.$api.deleteAlbum(undefined, null, { payload: '/' + item.id });
@@ -69,22 +73,28 @@ export default {
             } else this.$common.warning(res.message || '删除相册失败');
           }
         }
-      })
+      });
     },
     trigger(e) {
       this.$refs.uniFab.close(); // 收起按钮组
       if (!e && !e.item) return;
-      switch (e.item.value){
+      switch (e.item.value) {
         // 新建相冊
         case 'create':
           uni.navigateTo({
             url: './create/create'
           });
           break;
+        case 'upload':
+          uni.navigateTo({
+            url: './upload/upload'
+          });
+          break;
         default:
           break;
       }
     },
+    // 获取用户相册列表
     async getUserAlbumsList() {
       const res = await this.$api.getAllalbums();
       if (res.status !== 200) return this.$common.error(res.message || '获取用户相册列表失败');

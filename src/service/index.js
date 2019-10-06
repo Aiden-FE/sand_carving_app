@@ -33,3 +33,9 @@ export const deleteAlbum = {
   url: '/app/albums',
   method: 'delete',
 }
+
+// 获取上传或下载凭证
+export const getVoucher = {
+  url: '/common/voucher/getVoucher',
+  method: 'post'
+}

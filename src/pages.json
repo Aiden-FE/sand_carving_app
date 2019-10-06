@@ -9,7 +9,7 @@
     {
       "path": "pages/albums/albums",
       "style": {
-        "navigationBarTitleText": "云相册",
+        "navigationStyle": "custom",
         "app-plus": {
           "pullToRefresh": {
             "support": true
@@ -28,8 +28,14 @@
       "style" : {
         "navigationBarTitleText": "新建相冊"
       }
+    },
+    {
+      "path" : "pages/albums/upload/upload",
+      "style" : {
+        "navigationBarTitleText": "上传图片"
+      }
     }
-   ],
+  ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "沙雕",
