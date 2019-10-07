@@ -2,11 +2,11 @@
   <view class="albums">
     <uni-grid :show-border="false" :column="3">
       <uni-grid-item>
-        <image @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="ALBUMS_DEFAULT_IMG" mode="aspectFit"></image>
+        <image @click="ablumEntry('all', '全部')" @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="ALBUMS_DEFAULT_IMG" mode="aspectFit"></image>
         <text class="text">全部</text>
       </uni-grid-item>
       <uni-grid-item v-for="item in albumsList" :key="item.id">
-        <image @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG" mode="aspectFit"></image>
+        <image @click="ablumEntry(item.id, item.name)" @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG" mode="aspectFit"></image>
         <text class="text">{{ item.name }}</text>
         <icon v-if="isShowDelete" @click="deleteAlbum(item)" class="album-delete-button" type="cancel" size="20" />
       </uni-grid-item>
@@ -58,6 +58,11 @@ export default {
     this.getUserAlbumsList();
   },
   methods: {
+    ablumEntry(id, name) {
+      uni.navigateTo({
+          url: `./list/list?id=${id}&name=${name}`
+      });
+    },
     deleteAlbum(item) {
       uni.showModal({
         title: '提示',

@@ -53,6 +53,7 @@ export default class QiNiu {
           key: name,
           'x:token': config.userToken,
           'x:url': config.isPublic ? this.hostPublic + name :this.hostPrivate + name,
+          'x:album': config.album,
           'x:isPublic': config.isPublic
         },
         success: (res) => {

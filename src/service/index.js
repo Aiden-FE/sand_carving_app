@@ -22,6 +22,12 @@ export const getAllalbums = {
   method: 'get',
 }
 
+// 获取指定相册下的所有图片
+export const getAlbumImgList = {
+  url: '/app/albums/',
+  method: 'get'
+}
+
 // 新增相册
 export const createAlbum = {
   url: '/app/albums',
@@ -38,4 +44,10 @@ export const deleteAlbum = {
 export const getVoucher = {
   url: '/common/voucher/getVoucher',
   method: 'post'
+}
+
+// 删除相册图片文件
+export const removeFiles = {
+  url: '/app/delete-all/albums',
+  method: 'delete'
 }
