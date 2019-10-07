@@ -51,3 +51,15 @@ export const removeFiles = {
   url: '/app/delete-all/albums',
   method: 'delete'
 }
+
+// 发送注册短信接口
+export const sendRegisterSms = {
+  url: '/open/sms/register',
+  method: 'post'
+}
+
+// 用户注册
+export const userRegister = {
+  url: '/open/user/register',
+  method: 'post'
+}

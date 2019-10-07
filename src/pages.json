@@ -40,6 +40,18 @@
       "style" : {
         "navigationBarTitleText": "相册"
       }
+    },
+    {
+      "path" : "pages/login/phone",
+      "style" : {
+        "navigationBarTitleText": "手机号登录"
+      }
+    },
+    {
+      "path" : "pages/register/register",
+      "style" : {
+        "navigationBarTitleText": "用户注册"
+      }
     }
   ],
   "globalStyle": {

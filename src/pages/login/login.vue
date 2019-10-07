@@ -15,14 +15,22 @@
           <input class="sc-form-item-input" :maxlength="4" v-model="form.captcha" placeholder="请输入验证码" />
           <image @click="getCaptchaImg" class="captcha-box" :src="svgCaptcha" />
         </view>
-        <view class="sc-form-tips">
-          <text @click="switchSignMethod">点击可切换其他登录方式</text>
-          <view class="signIcon uni-icon uni-icon-pengyouquan"></view>
-        </view>
+        <!-- <view class="sc-form-tips text-left">
+          <navigator hover-class="none" url="./phone">
+            <text>切换手机登录</text>
+            <image class="imageIcon" src="../../static/images/phone.png"></image>
+          </navigator>
+        </view> -->
         <view class="sc-form-buttons">
           <button :style="{
             opacity: submitStatus ? .7 : 1
           }" class="submitBtn" :loading="submitStatus" form-type="submit">登 录</button>
+        </view>
+        <view class="sc-form-tips text-center">
+          <navigator hover-class="none" url="../register/register" open-type="navigate">
+            <text>没有账号?点击注册</text>
+            <image class="imageIcon" src="../../static/images/register.png"></image>
+          </navigator>
         </view>
       </form>
     </view>
@@ -54,10 +62,6 @@ export default {
     } else this.getCaptchaImg();
 	},
 	methods: {
-    // 切换登录方式
-    switchSignMethod() {
-      this.$common.info('很抱歉,该功能尚未开放!');
-    },
     // 获取验证码
     getCaptchaImg: debounce(async function() {
       const res = await this.$api.captcha();
@@ -99,6 +103,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.imageIcon {
+  position: relative;
+  top: -4rpx;
+  width: 40rpx;
+  height: 40rpx;
+  vertical-align: middle;
+}
 .captcha-box {
   width: 220rpx;
   height: 40px;
