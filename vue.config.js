@@ -21,7 +21,8 @@ module.exports = {
     port: 3000,
     proxy: {
       '/api': {
-        target: `http://192.168.1.2:7001`,
+        target: `http://localhost:7001`,
+        // target: `http://192.168.1.2:7001`,
         // target: `https://www.agilityjin.top`,
         secure: false,
         ws: true,
