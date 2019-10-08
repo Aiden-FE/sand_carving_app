@@ -76,6 +76,7 @@
   import WakaryInput from '@/components/wakary-input/wakary-input.vue';
   import { phoneNumReg, passWordReg, userNameReg, realNameReg, emailReg } from '@/utils/patterns.js';
   import { USER_INFO_KEY } from '@/config/constants'
+  import { encodeFunc } from '@/utils'
 	export default {
     components: {
       uniPopup,
@@ -121,7 +122,10 @@
       },
       // 用户注册
       async registerUser(code) {
-        this.form.captcha = code;
+        const params = Object.assign({}, this.form, {
+          captcha: code,
+          password: encodeFunc(this.form.password)
+        })
         // userRegister
         const res = await this.$api.userRegister(this.form)
         if (res.status === 200) {
