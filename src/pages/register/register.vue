@@ -74,7 +74,7 @@
 <script>
   import { uniPopup } from '@dcloudio/uni-ui';
   import WakaryInput from '@/components/wakary-input/wakary-input.vue';
-  import { phoneNumReg, passWordReg, userNameReg, emailReg } from '@/utils/patterns.js';
+  import { phoneNumReg, passWordReg, userNameReg, realNameReg, emailReg } from '@/utils/patterns.js';
   import { USER_INFO_KEY } from '@/config/constants'
 	export default {
     components: {
@@ -157,7 +157,7 @@
         if (!this.form.password || !passWordReg.test(this.form.password)) return this.$common.warning('请提供6-16位由字母及数字组成的密码');
         if (!this.form.password || !passWordReg.test(this.form.password)) return this.$common.warning('请提供6-16位由字母及数字组成的密码');
         if (!this.form.name || this.form.name.length < 2 || this.form.name.length > 12) return this.$common.warning('请提供2-12位的昵称');
-        if (this.form.userName && !userNameReg.test(this.form.userName)) return this.$common.warning('请填写真实的用户姓名');
+        if (this.form.userName && !realNameReg.test(this.form.userName)) return this.$common.warning('请填写真实的用户姓名');
         if (this.form.email && !emailReg.test(this.form.email)) return this.$common.warning('请填写正确的邮箱地址');
         // 调用发送验证码接口,成功后执行下面的逻辑
         const res = await this.$api.sendRegisterSms({
