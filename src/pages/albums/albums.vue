@@ -1,14 +1,11 @@
 <template>
   <view class="albums">
     <uni-grid :show-border="false" :column="3">
-      <uni-grid-item>
-        <image @click="ablumEntry('all', '全部')" @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="ALBUMS_DEFAULT_IMG" mode="aspectFit"></image>
-        <text class="text">全部</text>
-      </uni-grid-item>
-      <uni-grid-item v-for="item in albumsList" :key="item.id">
-        <image @click="ablumEntry(item.id, item.name)" @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG" mode="aspectFit"></image>
-        <text class="text">{{ item.name }}</text>
-        <icon v-if="isShowDelete" @click="deleteAlbum(item)" class="album-delete-button" type="cancel" size="20" />
+      <uni-grid-item class="albums-item" v-for="item in albumsList" :key="item.id">
+        <image @click="ablumEntry(item.id, item.name)" @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG" mode="center"></image>
+        <view class="albums-name">{{ item.name }}</view>
+        <view class="albums-tips">{{ item.count }}</view>
+        <icon v-if="isShowDelete && item.id !== 'all'" @click="deleteAlbum(item)" class="album-delete-button" type="cancel" size="20" />
       </uni-grid-item>
     </uni-grid>
     <uniFab ref="uniFab" direction="vertical" horizontal="right" @trigger="trigger" :content="content" :pattern="pattern"></uniFab>
@@ -46,16 +43,12 @@ export default {
       ALBUMS_DEFAULT_IMG
     };
   },
-  onLoad() {
+  onShow() {
     this.getUserAlbumsList();
   },
   async onPullDownRefresh() {
     await this.getUserAlbumsList();
     uni.stopPullDownRefresh();
-  },
-  onBackPress(options) {
-    console.log('触发后退生命周期', options);
-    this.getUserAlbumsList();
   },
   methods: {
     ablumEntry(id, name) {
@@ -117,6 +110,23 @@ export default {
 }
 .albums {
   padding-top: var(--status-bar-height);
+  overflow-y: hidden;
+  &-item {
+    padding: 6rpx 0 6rpx 3rpx;
+  }
+  &-name, &-tips {
+    padding-left: 24rpx;
+    width: 100%;
+    text-align: left;
+  }
+  &-name {
+    font-size: 30rpx;
+    color: @labelColor;
+  }
+  &-tips {
+    font-size: 24rpx;
+    color: @tipsColor;
+  }
   &-img {
     width: 100%;
   }
