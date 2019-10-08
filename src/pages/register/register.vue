@@ -88,11 +88,11 @@
         popupShow: false,
         limitTime: '',
         submitStatus: false,
-				form: {
-          phone: '17621667884', // *唯一手机号码
-          password: 'ps123456', // *登录密码
+		    form: {
+          phone: '', // *唯一手机号码
+          password: '', // *登录密码
           sex: '男', // *性别
-          name: 'sfsdf', // *昵称
+          name: '', // *昵称
           account: '', // *普通登录账户,不设置则默认为手机号
           captcha: '',
           userName: '', // 真实姓名
