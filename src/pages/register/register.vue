@@ -26,11 +26,11 @@
           </text>
           <radio-group class="sc-form-item-input" @change="sexChange">
             <label style="margin-right: 25rpx" for="nan">
-              <radio id="nan" value="男" :checked="form.sex === '男'" />
+              <radio color="#00B9B2" id="nan" value="男" :checked="form.sex === '男'" />
               <text>男</text>
             </label>
             <label for="nv">
-              <radio id="nv" value="女" :checked="form.sex === '女'" />
+              <radio color="#00B9B2" id="nv" value="女" :checked="form.sex === '女'" />
               <text>女</text>
             </label>
           </radio-group>
@@ -127,7 +127,7 @@
         params.captcha = code
         params.password = encodeFunc(this.form.password)
         // userRegister
-        const res = await this.$api.userRegister(this.form)
+        const res = await this.$api.userRegister(params)
         if (res.status === 200) {
           this.$common.success('注册成功')
           // 执行数据存储
