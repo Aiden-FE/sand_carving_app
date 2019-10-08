@@ -120,7 +120,8 @@
         this.form.sex = event.target.value
       },
       // 用户注册
-      async registerUser() {
+      async registerUser(code) {
+        this.form.captcha = code;
         // userRegister
         const res = await this.$api.userRegister(this.form)
         if (res.status === 200) {
