@@ -6,8 +6,8 @@ export default class QiNiu {
   hostPrivate = 'http://pydogipoh.bkt.clouddn.com/'
   hostPublic = 'http://pybmabghq.bkt.clouddn.com/'
   // 生成文件名称
-  createFileName(key) {
-    return encodeFunc(key || parseInt(Math.random() * 1000000000 + 1), new Date().getTime());
+  createFileName(userId, key) {
+    return userId + encodeFunc(key || parseInt(Math.random() * 1000000000 + 1), new Date().getTime());
   }
   /**
    * @name 多图片上传方法

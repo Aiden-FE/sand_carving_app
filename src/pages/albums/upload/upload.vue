@@ -73,7 +73,7 @@
             let arr = []
             for (const item of res.tempFilePaths) {
               arr.push({
-                fname: qiniu.createFileName(),
+                fname: qiniu.createFileName(this.userInfo.userId),
                 uri: item
               })
             }
