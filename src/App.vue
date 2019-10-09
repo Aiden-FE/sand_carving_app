@@ -48,4 +48,5 @@
 </script>
 
 <style lang="less">
+  @import 'animate.css';
 </style>

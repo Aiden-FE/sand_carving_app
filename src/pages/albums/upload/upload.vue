@@ -5,7 +5,7 @@
         <view class="sc-form-item">
           <text class="sc-form-item-label">相册</text>
           <picker :disabled="uploadStatus === 'loading'" class="sc-form-item-input" mode="selector" range-key="name" :range="albums" @change="albumsChange">
-            <view>{{form.name || '全部'}}</view>
+            <view>{{form.name}}</view>
           </picker>
         </view>
         <view class="sc-form-item">
@@ -39,8 +39,8 @@
           contentnomore: "上传结束"
         },
 				form: {
-          name: '',
-          album: '',
+          name: '全部',
+          album: 'all',
           isPublic: true
         },
         voucher: '',
@@ -60,7 +60,7 @@
         const config = {
           token: this.voucher,
           userToken: this.userInfo.token,
-          album: this.form.album,
+          album: this.form.album === 'all' ? '' : this.form.album,
           isPublic: this.form.isPublic,
           percent: 0
         }
@@ -73,7 +73,7 @@
             let arr = []
             for (const item of res.tempFilePaths) {
               arr.push({
-                fname: qiniu.createFileName(),
+                fname: qiniu.createFileName(self.userInfo.userId),
                 uri: item
               })
             }
@@ -88,7 +88,8 @@
             uni.showModal({
               title: '通知',
               content: msg,
-              showCancel: false,
+              cancelText: '继续上传',
+              confirmText: '返回相册',
               success: ({confirm}) => {
                 if(confirm) {
                   uni.navigateBack();
@@ -109,10 +110,6 @@
         const res = await this.$api.getAllalbums();
         if (res.status !== 200) return this.$common.error(res.message || '获取用户相册列表失败');
         this.albums = res.data;
-        this.albums.unshift({
-          id: '',
-          name: '全部'
-        });
       },
       // 获取上传凭证 key上传文件名,如果是公开上传则不需要传递该值
       async getUploadVoucher(key = '') {
