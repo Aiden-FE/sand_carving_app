@@ -7,7 +7,9 @@ export default class QiNiu {
   hostPublic = 'http://pybmabghq.bkt.clouddn.com/'
   // 生成文件名称
   createFileName(userId, key) {
-    return userId + encodeFunc(key || parseInt(Math.random() * 1000000000 + 1), new Date().getTime());
+    const encode = encodeFunc(key || parseInt(Math.random() * 1000000000 + 1), new Date().getTime());
+    const str = `${userId}/${encode}`
+    return str;
   }
   /**
    * @name 多图片上传方法
@@ -41,6 +43,7 @@ export default class QiNiu {
    * }
    * */
   uploadFile(files, name, config) {
+    console.log('name: ', name)
     return new Promise((resolver, reject) => {
       uni.uploadFile({
         url: this.uploadUrl,
