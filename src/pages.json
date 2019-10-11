@@ -12,7 +12,7 @@
         "navigationStyle": "custom",
         "app-plus": {
           "pullToRefresh": {
-            "support": true
+            "support": false
           }
         }
       }

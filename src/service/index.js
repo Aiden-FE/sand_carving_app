@@ -63,3 +63,25 @@ export const userRegister = {
   url: '/open/user/register',
   method: 'post'
 }
+
+// 获取共享相册
+export const getShareAlbums = {
+  url: '/app/share/albums',
+  method: 'get'
+}
+
+export const saveC = {
+  url: '/app/private/c',
+  method: 'post'
+}
+
+export const saveA = {
+  url: '/app/private/a',
+  method: 'post'
+}
+
+// 向服务器推送记录消息
+export const pushMessage = {
+  url: '/app/private/message',
+  method: 'post'
+}

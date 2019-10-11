@@ -8,6 +8,7 @@
 <script>
   import { ALBUMS_DEFAULT_IMG } from '@/config';
   import EmptyPage from '@/components/empty-page/index.vue';
+  import { USER_INFO_KEY } from '@/config/constants'
 	export default {
     components: {
       EmptyPage
@@ -15,6 +16,9 @@
 		data() {
 			return {
 				id: null,
+        userId: null,
+        userInfo: null,
+        isOtherId: false, // 是否为其他的相册
         imagesList: [],
         previewList: [],
         ALBUMS_DEFAULT_IMG
@@ -22,6 +26,9 @@
 		},
     onLoad(params) {
       this.id = params.id;
+      this.userId = params.userId
+      this.userInfo = uni.getStorageSync(USER_INFO_KEY)
+      this.isOtherId = this.userInfo.userId !== this.userId;
       uni.setNavigationBarTitle({
         title: params.name || '相册'
       });
@@ -68,7 +75,7 @@
           urls: this.previewList,
           loop: true,
           longPressActions: {
-            itemList: ['保存图片', '删除'],
+            itemList: self.isOtherId ? ['保存图片'] : ['保存图片', '删除'],
             success: function(data) {
               switch (data.tapIndex){
                 case 0:
@@ -86,7 +93,9 @@
       },
       // 获取相册图片列表
       async getAlbumImgList() {
-        const res = await this.$api.getAlbumImgList(null, null, {
+        const res = await this.$api.getAlbumImgList({
+          userId: this.userId
+        }, null, {
           payload: this.id
         });
         if (res.status !== 200) return this.$common.error(res.message || '获取相册下所有图片失败');
