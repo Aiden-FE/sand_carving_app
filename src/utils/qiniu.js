@@ -43,7 +43,6 @@ export default class QiNiu {
    * }
    * */
   uploadFile(files, name, config) {
-    console.log('name: ', name)
     return new Promise((resolver, reject) => {
       uni.uploadFile({
         url: this.uploadUrl,
