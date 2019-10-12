@@ -56,6 +56,7 @@ export default {
 	},
 	async onLoad() {
     if (uni.getStorageSync(USER_INFO_KEY)) {
+      this.$api.updateLastLoginTime()
       uni.switchTab({
         url: '../albums/albums'
       })

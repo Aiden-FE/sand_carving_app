@@ -132,6 +132,7 @@
           this.$common.success('注册成功')
           // 执行数据存储
           uni.setStorageSync(USER_INFO_KEY, res.data);
+          this.$api.updateLastLoginTime()
           setTimeout(uni.switchTab({
             url: '../albums/albums'
           }), 1600)

@@ -85,3 +85,8 @@ export const pushMessage = {
   url: '/app/private/message',
   method: 'post'
 }
+
+export const updateLastLoginTime = {
+  url: '/app/user/sign/update',
+  method: 'put'
+}

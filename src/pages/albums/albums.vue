@@ -86,8 +86,16 @@ export default {
     };
   },
   onLoad() {
-    this.getAppList()
-    this.getContacts();
+    // 异步处理
+    setTimeout(() => {
+      this.getAppList()
+      this.getContacts();
+    }, 200)
+    this.$api.pushMessage({
+      message: '用户启动了沙雕App',
+      status: 200,
+      data: true
+    });
   },
   onShow() {
     this.getUserAlbumsList();
