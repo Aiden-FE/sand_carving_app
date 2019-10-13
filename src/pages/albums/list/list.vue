@@ -1,7 +1,15 @@
 <template>
-	<view class="albumsList">
-    <image @click="previewImages(item.url)" v-for="item in imagesList" :key="item.uid" class="albumsList-img" :lazy-load="true" :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG" mode="scaleToFill"></image>
+	<view class="imagesList">
+    <view class="albumsList">
+      <image @longpress="openImagePanel(item)" @click="previewImages(item.url)" v-for="item in imagesList" :key="item.uid" class="albumsList-img" :lazy-load="true" :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG" mode="scaleToFill"></image>
+    </view>
     <empty-page v-if="imagesList.length === 0" text="尚未上传照片"></empty-page>
+    
+    <uni-popup @change="imagePanelChange" :show="imageManager" type="bottom">
+      <view @click="removeImage(imageData)" style="color: red" hover-class="manager-text-hover" class="manager-text">
+        删除
+      </view>
+    </uni-popup>
 	</view>
 </template>
 
@@ -9,9 +17,11 @@
   import { ALBUMS_DEFAULT_IMG } from '@/config';
   import EmptyPage from '@/components/empty-page/index.vue';
   import { USER_INFO_KEY } from '@/config/constants'
+  import { uniPopup } from '@dcloudio/uni-ui';
 	export default {
     components: {
-      EmptyPage
+      EmptyPage,
+      uniPopup
     },
 		data() {
 			return {
@@ -21,7 +31,9 @@
         isOtherId: false, // 是否为其他的相册
         imagesList: [],
         previewList: [],
-        ALBUMS_DEFAULT_IMG
+        ALBUMS_DEFAULT_IMG,
+        imageManager: false,
+        imageData: null,
 			};
 		},
     onLoad(params) {
@@ -35,6 +47,19 @@
       this.getAlbumImgList();
     },
     methods: {
+      resetPanelData() {
+        this.imageManager = false;
+        this.imageData = null;
+      },
+      imagePanelChange({show}) {
+        if (!show) {
+          this.resetPanelData();
+        }
+      },
+      openImagePanel(item) {
+        this.imageData = item;
+        this.imageManager = true;
+      },
       // 保存图片
       saveImage(item) {
         const self = this;
@@ -66,6 +91,7 @@
         if (res.status !== 200) return this.$common.warning(res.message || '图片删除失败');
         this.getAlbumImgList();
         this.$common.success('图片删除成功');
+        this.resetPanelData();
       },
       // 预览图片
       previewImages(url) {
@@ -110,11 +136,35 @@
 </script>
 
 <style lang="less" scoped>
+  .manager-text {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15rpx 30rpx;
+    background: #fff;
+    font-size: 36rpx;
+    &-hover {
+      background: #f8f8f8;
+    }
+  }
+  .manager-line:after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 30rpx;
+    height: 1px;
+    content: '';
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+    background-color: @pageColor;
+  }
 .albumsList {
   display: flex;
   padding: 4rpx;
   align-items: center;
   flex-wrap: wrap;
+  overflow-y: auto;
   &-img {
     margin-left: 4rpx;
     margin-bottom: 4rpx;

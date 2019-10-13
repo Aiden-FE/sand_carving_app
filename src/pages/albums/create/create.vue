@@ -23,7 +23,7 @@
         <view class="sc-form-buttons">
           <button :style="{
             opacity: submitStatus ? .7 : 1
-          }" :loading="submitStatus" class="submitBtn" form-type="submit">立即创建</button>
+          }" :loading="submitStatus" class="submitBtn" form-type="submit">立即{{ isEdit ? '修改' : '创建'}}</button>
         </view>
       </form>
     </view>
@@ -45,10 +45,40 @@
           {
             value: '',
           }
-        ]
+        ],
+        isEdit: false, // 是否为编辑,
+        id: null
 			};
 		},
+    onLoad(opts) {
+      this.isEdit = !!opts.id;
+      if (this.isEdit) {
+        this.getAlbumInfo(opts.id);
+        this.id = opts.id;
+        uni.setNavigationBarTitle({
+          title: '修改相册'
+        });
+      }
+    },
     methods:{
+      // 获取相册信息
+      async getAlbumInfo(id) {
+        const res = await this.$api.getAlbumInfo({
+          id
+        });
+        if (res.status !== 200) return this.$common.error(res.message || '获取相册信息失败');
+        this.form.name = res.data.name;
+        this.form.description = res.data.description;
+        const arr = [];
+        for (let item of res.data.sharePhone) {
+          arr.push({
+            value: item
+          })
+        }
+        if (arr.length > 0) {
+          this.sharePhone = arr;
+        }
+      },
       deleteSharePhone(index) {
         this.sharePhone.splice(index, 1)
       },
@@ -71,12 +101,19 @@
           }
         }
         this.submitStatus = true;
-        const res = await this.$api.createAlbum(this.form)
+        let res;
+        if (this.isEdit) {
+          res = await this.$api.editAlbum(this.form, null, {
+            payload: `/${this.id}`
+          })
+        } else {
+          res = await this.$api.createAlbum(this.form)
+        }
         this.submitStatus = false;
         if (res.status === 200) {
-          this.$common.success('新建相册成功');
+          this.$common.success(`${ this.isEdit ? '修改' : '新建' }相册成功`);
           uni.navigateBack();
-        } else this.$common.warning(res.message || '新建相册失败');
+        } else this.$common.warning(res.message || `${ this.isEdit ? '修改' : '新建' }相册失败`);
       }
     }
 	}

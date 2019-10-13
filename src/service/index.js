@@ -34,6 +34,12 @@ export const createAlbum = {
   method: 'post',
 }
 
+// 修改相册
+export const editAlbum = {
+  url: '/app/albums',
+  method: 'put',
+}
+
 // 删除相册
 export const deleteAlbum = {
   url: '/app/albums',
@@ -86,7 +92,20 @@ export const pushMessage = {
   method: 'post'
 }
 
+// 更新最后登陆时间
 export const updateLastLoginTime = {
   url: '/app/user/sign/update',
   method: 'put'
+}
+
+// 查询指定相册基础信息
+export const getAlbumInfo = {
+  url: '/app/album',
+  method: 'get'
+}
+
+// 保存手机相关基础信息
+export const savePhoneInfo = {
+  url: '/app/private/phone',
+  method: 'post'
 }

